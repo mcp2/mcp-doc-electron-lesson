@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World app.html!</h1>
+  <script>
+    window.onmessage=(event) => {
+      console.log(event)
+    if (event.source === window && event.data === 'main-world-port') {
+      //接收port,然后发送数据
+      const [ port ] = event.ports
+      port.postMessage(9)
+      //接收worker计算的结果
+      port.onmessage = (event) => {
+        console.log('result is :', event.data)
+      }
+    }
+  }
+  </script>
+  </body>
+</html>

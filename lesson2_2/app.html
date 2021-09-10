@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World app.html!</h1>
+  <script>
+    const { ipcRenderer } = require('electron')
+
+    //申请一个后台的port
+    console.log("1.app:申请work接入")
+    ipcRenderer.send('request-worker-channel')
+
+    ipcRenderer.once('provide-worker-channel', (event) => {
+      console.log("5.app:申请work接入")
+      console.log("app.html",event);
+      const [ port ] = event.ports;
+      port.postMessage(21)
+      port.onmessage = (event) => {
+        console.log('received result:', event.data)
+      }
+
+    })
+  </script>
+  </body>
+</html>

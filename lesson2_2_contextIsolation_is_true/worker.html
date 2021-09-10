@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<script>
+  function doWork(input) {
+    return input * 3
+  }
+  window.onmessage = (event) => {
+    if (event.source === window && event.data === 'main-world-port') {
+      const [port] = event.ports
+      
+      port.onmessage=(event)=>{
+        const result = doWork(event.data)
+        port.postMessage(result)
+      }
+    }
+  }
+</script>
+
+</html>

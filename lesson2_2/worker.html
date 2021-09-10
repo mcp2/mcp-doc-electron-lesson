@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <script>
+    const { ipcRenderer } = require('electron')
+    
+    function doWork(input) {
+      return input * 2
+    }
+    
+    ipcRenderer.on('new-client', (event) => {
+      const [ port ] = event.ports
+      console.log("3.worker,接收main传入的 port");
+      console.log("worker.html",event);
+      port.onmessage = (event) => {
+        const result = doWork(event.data)
+        port.postMessage(result)
+      }
+    })
+    </script>
+</html>
