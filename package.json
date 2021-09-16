@@ -2,17 +2,23 @@
   "name": "electron-quick-start",
   "version": "1.0.0",
   "description": "A minimal Electron application",
-  "main": "main.js",
+  "main": "./lesson6/native/main.js",
   "scripts": {
     "start:web": "cross-env __IS_WEB__=1 webpack serve --progress --config webpack.dev.config.js",
-    "lesson1": "electron ./lesson1/main.js",
-    "lesson2-2": "electron ./lesson2_2/main.js",
-    "lesson2_2_contextIsolation_is_true": "electron ./lesson2_2_contextIsolation_is_true/main.js",
-    "lesson3": "electron ./lesson3/native/main.js",
-    "lesson1:debug": "electron ./lesson1/main.js --debug",
-    "lesson1:remote": "electron --inspect=5999 ./lesson1/main.js"
+    "build:web": "cross-env __IS_WEB__=1 webpack --progress --config webpack.prod.config.js",
+    "lesson1": "electron ./lesson1/main.js --inline",
+    "lesson2-2": "electron ./lesson2_2/main.js --inline",
+    "lesson2_2_contextIsolation_is_true": "electron ./lesson2_2_contextIsolation_is_true/main.js --inline",
+    "lesson3": "electron ./lesson3/native/main.js --inline",
+    "lesson4": "electron ./lesson4/native/main.js --inline",
+    "lesson6": "electron ./lesson6/native/main.js --inline --debugs",
+    "lesson1:debug": "electron ./lesson1/main.js --debugs --inline",
+    "lesson1:remote": "electron --inspect=5999 ./lesson1/main.js --inline ",
+    "electron-builder": "electron-builder",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "",
   "keywords": [],
   "author": "GitHub",
   "license": "CC0-1.0",
@@ -32,6 +38,8 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.2.0",
     "electron": "^14.0.0",
+    "electron-builder": "21.2.0",
+    "electron-squirrel-startup": "^1.0.0",
     "express": "^4.17.1",
     "file-loader": "^6.2.0",
     "highlight.js": "^11.2.0",
@@ -42,6 +50,7 @@
     "qr-image": "^3.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-treebeard": "^3.2.4",
     "reactjs-localstorage": "^1.0.1",
     "shelljs": "^0.8.4",
     "source-map": "^0.7.3",
@@ -54,6 +63,25 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "react-treebeard": "^3.2.4"
+    "nodegit": "^0.27.0"
+  },
+  "build": {
+    "appId": "com.mcp.doc",
+    "productName": "MCP文档",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "./lib/**",
+      "./lesson4/**",
+      "./assets/**"
+    ],
+    "mac": {
+      "category": "com.mcp.doc",
+      "icon": "assets/app.icns"
+    },
+    "win": {
+      "artifactName": "${productName}_setup_${version}.${ext}"
+    }
   }
 }
