@@ -14,6 +14,8 @@ object-assign
 
 /*! VelocityJS.org jQuery Shim (1.0.1). (C) 2014 The jQuery Foundation. MIT @license: en.wikipedia.org/wiki/MIT_License. */
 
+/*! https://mths.be/punycode v1.3.2 by @mathias */
+
 /**
  * @license
  * Lodash <https://lodash.com/>

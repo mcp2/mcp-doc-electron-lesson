@@ -2,6 +2,7 @@ import React, { Fragment, PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { includes } from 'lodash';
 import { Divider,Button,Input } from 'antd';
+const { Search } = Input;
 import { MailOutlined, AppstoreOutlined, SettingOutlined, CloudSyncOutlined } from '@ant-design/icons';
 import { Treebeard, decorators } from 'react-treebeard';
 import { Div } from 'react-treebeard/dist/components/common';
@@ -73,16 +74,23 @@ export default class App extends PureComponent {
   }
 
 
-  refreshFromGit=()=>{
+  refreshFromGit=(url="https://gitee.com/mcp1/mcp-doc-center.git")=>{
     if(window.bridge){
-      window.bridge.refreshDoc("https://gitee.com/mcp1/mcp-doc-center.git");
+      window.bridge.refreshDoc(url,(code)=>{
+          console.error(code);
+        if(!code){
+          this.readDirByWindow();
+        }else{
+          console.error("异常~~~~~~~");
+        }
+      });
     }
   }
 
   readDirByWindow=()=>{
     if (window.bridge) {
-      var dirs = window.bridge.readDir("../../assets/doc");
-      var list = rebuildListContent(dirs,"/assets/doc");
+      var dirs = window.bridge.readDir("../../DocCenter");
+      var list = rebuildListContent(dirs,"/DocCenter");
       var data = formatData(list);
       this.setState({data});
       this.loadType=0;//window方式
@@ -149,14 +157,22 @@ export default class App extends PureComponent {
     return (
       <Fragment>
         <div style={{display:"flex",marginTop:10}}>
-        <Button
+        {/* <Button
               type="primary"
               size="large"
               style={{flex:1, border:0,fontSize:18,marginLeft:20,marginRight:20}}
               onClick={this.refreshFromGit}
               icon={<CloudSyncOutlined style={{fontSize:16}}/>}
-       >拉取最新文档</Button>
-
+       >拉取最新文档</Button> */}
+        <Search placeholder="输入文档git地址"
+              defaultValue="https://gitee.com/mcp1/mcp-doc-center.git"
+              onSearch={this.refreshFromGit}
+              enterButton={ <Button
+              type="primary"
+              size="large"
+              style={{ border:0,fontSize:20}}
+              icon={<CloudSyncOutlined style={{fontSize:20}}/>}
+            >拉取最新文档</Button>} size="large"  loading={this.state.markDownBtnLoading} />
 
       </div>
 

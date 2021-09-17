@@ -11,11 +11,10 @@ contextBridge.exposeInMainWorld('bridge', {
         var absPath = path.join(__dirname,'../../', relPath);
         return readFileSync(absPath)
     },
-    refreshDoc:(gitUrl)=>{
+    refreshDoc:(gitUrl,callback)=>{
         ipcRenderer.send('git-refresh', { "url": gitUrl});
-        ipcRenderer.on("git-refresh-reply", function (event, {title,msg}) {
-            console.log(title,msg);
-            setTimeout(()=>event.sender.send("render-to-main",{title:"hello",msg:(+new Date)}),1000);
+        ipcRenderer.on("git-refresh-reply", function (event, {code}) {
+                callback&&callback(code)
           });
     }
 })

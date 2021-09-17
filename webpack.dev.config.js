@@ -8,9 +8,9 @@ const commonConfig = require('./webpack.common.config');
  const devConfig = {
   //指定项目的模式 production:生产环境 development:开发环境
   mode: 'development',
-  devtool: "source-map",
+  devtool: "inline-source-map",
   entry: {
-    'mcp_doc_lesson': path.resolve(__dirname, 'lesson3/web/index.js')
+    'mcp_doc_lesson': path.resolve(__dirname, 'lesson6/web/index.js')
   },
   output: {
     filename: `[name].dev.js`,

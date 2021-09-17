@@ -1,7 +1,7 @@
 // Modules to control application life and create native browser window
 
 const { BrowserWindow, app, ipcMain, MessageChannelMain } = require('electron')
-const path = require('path')
+const path = require('path');
 const {gitClone,gitResetHard,gitPull,gitFetch,gitCDWD} = require('./gitUtil')
 var IS_DEBUG = false;
 var IS_INLINE = false
@@ -44,13 +44,11 @@ function createWindow() {
   IS_DEBUG && mainWindow.webContents.openDevTools()
 
 
-  const gitRefreshReply = (event,msg) =>{
-    console.log(msg)
-    // event.reply("reply-render-to-main",{title:'git-refresh-reply',msg:(+new Date)})
+  const gitRefreshReply = (event,code) =>{
+    event.reply("git-refresh-reply",{code})
   }
 
   ipcMain.on('git-refresh', (event, data) => {
-    // console.log(event, data.url);
     gitClone(data.url).then((isCloned)=>{
       if(isCloned){
         gitCDWD()
@@ -58,13 +56,13 @@ function createWindow() {
         .then(gitResetHard)
         .then(gitPull)
         .then(()=>{
-          gitRefreshReply(event,"success git pull");
+          gitRefreshReply(event,0);
         })
       }else{
-        gitRefreshReply(event,"success  clone first");
+        gitRefreshReply(event,0);
       }
-    }).then(result=>{
-     
+    }).catch((e)=>{
+      gitRefreshReply(event,1)
     })
   })
 
