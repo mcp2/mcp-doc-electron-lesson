@@ -1,6 +1,6 @@
 const shell = require('shelljs');
 const path = require('path');
-const { Notification } = require('electron')
+const {showNotification} = require("./logUtil");
 const cwd = () => {
     return path.join(__dirname, "../../DocCenter");
 }
@@ -22,16 +22,9 @@ const gitClone = function (gitUrl) {
     })
 }
 
-const showNotification = function(title,body){
-    new Notification({ title, body }).show()
-}
 
 const gitCDWD = function() {
     // const shellScript = `cd ${cwd()}`;
-
-
-
-
     shell.cd(cwd());
     return new Promise((resolve, reject) => {
         shell.cd(cwd());

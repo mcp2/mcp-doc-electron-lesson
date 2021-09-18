@@ -36,6 +36,7 @@ export default class CodeParser extends React.Component {
         let codeBlocks = null;
         this.Parser = _.flow(
             MarkDownParser.parse(function (code, lang) {
+                console.log(code)
                 if (self.props.codeCallback) {
                     self.props.codeCallback(code, lang);
                 }

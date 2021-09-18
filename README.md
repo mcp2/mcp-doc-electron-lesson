@@ -726,15 +726,15 @@ App.js中使用
 
 
 
-### 打包发布
+## Lesson5:打包发布（Mac dmg包）
 
-#### 选型electron-builder vs electron-forge
+### 选型electron-builder vs electron-forge
 
 开始的时候使用electron-forge,但是发现引入静态文件不支持模糊匹配，官方文档说会排除devDep的node_modules，但是实际发现还是会引入一些。所以决定尝试使用electron-builder。
 
-#### 打包步骤
+### 打包步骤
 
-__安装__
+#### __安装__
 
 因为electron-builder最新版本对node有要求，所以降级安装了，可以根据自己node环境来决定
 
@@ -752,16 +752,17 @@ package.json下添加build配置
     "pack": "electron-builder --dir", //不打dmg
     "dist": "electron-builder"
   },
-
+ // electron-builder配置
 	"build": {
     "appId": "com.mcp.doc", //类似bundleID
     "productName": "MCP文档", //产品名称
+    "asar":false, // 不放入asar直接放在Resouce下
     "directories": {
       "output": "dist"       //打包后的输出路径
     },
     "files": [            //引入的文件白名单，包括你工程代码
       "./lib/**",
-      "./lesson4/**",
+      "./lesson6/**",
       "./assets/**"
     ],
     "mac": {
@@ -771,7 +772,11 @@ package.json下添加build配置
   }
 ```
 
-__icon准备__
+值得注意的是build下的asar的配置，默认情况下，所有的files将会放在一个类似压缩包的asar,在这包下是没有创建文件夹的权限的，因此如果你有读写操作的话，最好设置为false,这样打包后就可以直接在Resource下创建文件夹并读写了。
+
+虽然electron应该是处于安全考虑，要保护这部分核心的文件，但是网上也已经破解了压缩算法，你可以
+
+#### __icon准备__
 
 png转成icns，就是上面配置的assets/app.icns
 
@@ -794,12 +799,40 @@ sips -z 1024 1024 1.png --out pngpic.iconset/icon_512x512@2x.png
 
 4. 生成后可以用“预览”打开相关图片
 
-__执行命令__
+#### __执行命令__
 
 ```js
 yarn run pack //打包
 yarn run dist //打包dmg
 ```
+
+
+
+### 增加功能
+
+修改了本地读取改为git远程拉取的方式
+
+第一次拉取完毕后，如果修改了git库，请先重置后再拉取
+
+TODO:
+
+点击后等待反馈体验不好，需要增加日志或者等待提醒
+
+## Lesson6: 增加App预览能力（类似expo）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { includes } from 'lodash';
 import { Divider,Button,Input } from 'antd';
 const { Search } = Input;
-import { MailOutlined, AppstoreOutlined, SettingOutlined, CloudSyncOutlined } from '@ant-design/icons';
+import { RedoOutlined, CloudSyncOutlined } from '@ant-design/icons';
 import { Treebeard, decorators } from 'react-treebeard';
 import { Div } from 'react-treebeard/dist/components/common';
 import styles from './styles';
@@ -65,9 +65,17 @@ var formatData = (rootObj)=>{
 export default class App extends PureComponent {
   constructor(props) {
     super(props);
-    this.state={data:{},isMardDownFile:true,cursor:require("./test.js")}
+    // 测试用state
+    // this.state={data:{},isMardDownFile:true,cursor:require("./test.js")}
+    this.state={data:{}}
     this.onToggle = this.onToggle.bind(this);
     this.onSelect = this.onSelect.bind(this);
+    this.previewCodes = [];
+  }
+
+  resetPreviewCodes=()=>{
+    this.previewCodes = [];
+
   }
 
   componentDidMount() {
@@ -77,13 +85,19 @@ export default class App extends PureComponent {
   refreshFromGit=(url="https://gitee.com/mcp1/mcp-doc-center.git")=>{
     if(window.bridge){
       window.bridge.refreshDoc(url,(code)=>{
-          console.error(code);
         if(!code){
           this.readDirByWindow();
         }else{
           console.error("异常~~~~~~~");
         }
       });
+    }
+  }
+
+  resetDocEnv=()=>{
+    if(window.bridge){
+      window.bridge.resetDocEnv("../../DocCenter");
+      console.log("Reset成功")
     }
   }
 
@@ -121,14 +135,13 @@ export default class App extends PureComponent {
       if (window.bridge) {
         var content = window.bridge.readFile(relPath);
         this.setState(() => ({ cursor: content }));
+        this.resetPreviewCodes()
       }
     }
   }
 
   onSelect(node) {
-
     const { cursor, data } = this.state;
-
     if (cursor) {
       this.setState(() => ({ cursor, active: false }));
       if (!includes(cursor.children, node)) {
@@ -152,6 +165,15 @@ export default class App extends PureComponent {
     this.setState(() => ({ data: filtered }));
   }
 
+  collectCodeThrottle = _.throttle(()=>{
+    window.bridge.setPreviewCodeArray(this.previewCodes);
+  }, 1000)
+
+  collectCode=(code)=>{
+    this.previewCodes.push(code)
+    this.collectCodeThrottle()
+  }
+
   render() {
     const { data, cursor,markDownCodeShow } = this.state;
     return (
@@ -173,7 +195,13 @@ export default class App extends PureComponent {
               style={{ border:0,fontSize:20}}
               icon={<CloudSyncOutlined style={{fontSize:20}}/>}
             >拉取最新文档</Button>} size="large"  loading={this.state.markDownBtnLoading} />
-
+      <Button
+              type="primary"
+              size="large"
+              onClick={this.resetDocEnv}
+              style={{ border:0,fontSize:20,backgroundColor:"red"}}
+              icon={<RedoOutlined style={{fontSize:20}}/>}
+            >重置文档</Button>
       </div>
 
         <div style={{display:"flex",height:"100%"}}>
@@ -193,7 +221,7 @@ export default class App extends PureComponent {
           />
         </Div>
         <Div style={styles.component2}>
-          {this.state.isMardDownFile?<CodeParser sourceCode={cursor} codeCallback={(code,lang)=>{console.log(code,lang)}} onComplete={(apis)=>{console.log(apis)}}></CodeParser>:<NodeViewer node={cursor} />}
+          {this.state.isMardDownFile?<CodeParser sourceCode={cursor} codeCallback={this.collectCode} onComplete={(apis)=>{console.log(apis)}}></CodeParser>:<NodeViewer node={cursor} />}
         </Div>
         </div>
       </Fragment>
