@@ -45,7 +45,6 @@
     "file-loader": "^6.2.0",
     "highlight.js": "^11.2.0",
     "html-webpack-plugin": "^5.3.2",
-
     "markdown-it": "^12.2.0",
     "ora": "^5.4.0",
     "qr-image": "^3.2.0",
@@ -83,8 +82,10 @@
     }
   },
   "dependencies": {
+    "blink-diff": "^1.0.13",
     "fs-extra": "^10.0.0",
-    "shelljs": "^0.8.4",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "pixelmatch": "^5.2.1",
+    "shelljs": "^0.8.4"
   }
 }
