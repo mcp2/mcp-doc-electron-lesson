@@ -18,7 +18,7 @@ process.argv.forEach((e) => {
 var WEB_URL = path.join(__dirname, "../../lib/index.html")
 function createWindow() {
   const mainWindow = new BrowserWindow({
-    width: 1200,
+    width: 1800,
     height: 800,
     webPreferences: {
       nodeIntegration: true,

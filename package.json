@@ -1,5 +1,5 @@
 {
-  "name": "electron-quick-start",
+  "name": "MCPDoc",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "./lesson6/native/main.js",
@@ -13,6 +13,8 @@
     "lesson4": "electron ./lesson4/native/main.js --inline",
     "lesson5": "electron ./lesson5/native/main.js --inline",
     "lesson6": "electron ./lesson6/native/main.js --inline --debugs",
+    "lesson7": "electron ./lesson7/native/main.js --inline --debugs",
+    "lesson8": "electron ./lesson8/native/main.js --inline --debugs",
     "lesson1:debug": "electron ./lesson1/main.js --debugs --inline",
     "lesson1:remote": "electron --inspect=5999 ./lesson1/main.js --inline ",
     "electron-builder": "electron-builder",
@@ -70,12 +72,12 @@
     },
     "files": [
       "./lib/**",
-      "./lesson5/**",
+      "./lesson6/**",
       "./assets/**"
     ],
     "mac": {
       "category": "com.mcp.doc",
-      "icon": "assets/app.icns"
+      "icon": "assets/mcp-icon.png"
     },
     "win": {
       "artifactName": "${productName}_setup_${version}.${ext}"

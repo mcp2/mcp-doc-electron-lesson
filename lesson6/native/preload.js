@@ -45,6 +45,7 @@ window.addEventListener('DOMContentLoaded', () => {
     $(document).on("click",".playCode",function(e){
         let codeIndex = $(this).data("codeindex");
         if(this.innerHTML.toLocaleLowerCase().indexOf("ios")>0){
+            console.log(previewCodeArray,previewCodeArray[codeIndex]);  
           RuniOSSim(previewCodeArray[codeIndex]);
         }else if(this.innerHTML.toLocaleLowerCase().indexOf("and")>0){
           RunAndroidPhone(previewCodeArray[codeIndex]);
